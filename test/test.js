@@ -11,7 +11,7 @@ describe('Check user input', function() {
         };
         user.name = "Pete";
         delete user.name;
-        console.log(user);        
+        console.log(user);
     });
     it('check is empty obj?', function() {
         function isEmpty(schedule) {
