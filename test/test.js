@@ -10,7 +10,7 @@ user.name = "Pete";
 delete user.name;
 console.log(user);
 /*==================================
-====================================*//*
+====================================*/
 function isEmpty(schedule) {
     for (let prop in schedule) {
         return false;
@@ -25,7 +25,7 @@ alert( isEmpty(schedule) ); //true
 schedule["8 : 30"] = "Time to get up";
 alert( isEmpty(schedule) ); //false
 /*==================================
-====================================*//*
+====================================*/
 function sum(salaries) {
     let total = 0;
     for (let prop in salaries) {
@@ -40,7 +40,7 @@ let salaries = {
 };
 alert( sum(salaries) ); //390
 /*==================================
-====================================*//*
+====================================*/
 function multiplyNumeric(menu) {
     for (let prop in menu) {
         if (typeof menu[prop] === "number") {
@@ -61,4 +61,4 @@ let menu = {
 };
 let newMenu = multiplyNumeric(menu);
 console.log(newMenu);
-//{width: 400, height: 600, title: "My menu", body: "My body", radius: 60}*/
+//{width: 400, height: 600, title: "My menu", body: "My body", radius: 60}
