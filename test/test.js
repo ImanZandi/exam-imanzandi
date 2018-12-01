@@ -61,4 +61,4 @@ let menu = {
 };
 let newMenu = multiplyNumeric(menu);
 console.log(newMenu);
-//{width: 400, height: 600, title: "My menu", body: "My body", radius: 60}
+//{width: 400, height: 600, title: "My menu", body: "My body", radius: 60}*/
