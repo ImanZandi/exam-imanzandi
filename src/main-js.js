@@ -135,12 +135,12 @@ let user = {
     name: "John",
     age: 30,
     sayHi() {
-      alert(this.name); // this or user
+      alert(this.name); // this or user , this refer to sayHi() call
     }
 };
 let admin = user;
 user = null;
-admin.sayHi(); // John
+admin.sayHi(); // John , admin == this , this hint
 /*===============================*/
 console.log(this); //Object {  }
 /*===============================*/
