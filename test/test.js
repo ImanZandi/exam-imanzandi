@@ -3,6 +3,38 @@ const chai = require('chai');
 let assert = chai.assert;
 let _ = require('lodash');
 
+describe('checkSpam', function() {
+    it('test', function() {
+        function checkSpam(str) {
+            let lowerStr = str.toLowerCase();
+            return lowerStr.includes('viagra') || lowerStr.includes('xxx');
+        }
+        assert.strictEqual(checkSpam('buy ViAgRA now'), true);
+        assert.strictEqual(checkSpam('free xxxxx'), true);
+        assert.strictEqual(checkSpam('innocent rabbit'), false);
+    });
+});
+describe('truncate', function() {
+    it('test', function() {
+        function truncate(str, maxlength) {
+            return (str.length > maxlength) ? str.slice(0, maxlength - 1) + '...' : str;
+        }
+        assert.strictEqual(truncate("What I'd like to tell on this topic is:", 20), "What I'd like to te...");
+        assert.strictEqual(truncate("Hi everyone!", 20), "Hi everyone!");
+    });
+});
+describe('extractCurrencyValue', function() {
+    it('test', function() {
+        function extractCurrencyValue(str) {
+            if (str.startsWith('$')) {
+                return +str.slice(1); //change type to number manual , with +
+            }
+            return parseInt(str); //change type to number automatic, dont need +
+        }
+        assert.strictEqual(extractCurrencyValue('$120'), 120);
+        assert.strictEqual(extractCurrencyValue('120$'), 120);
+    });
+});
 describe('Calculator', function() {
     it('test', function() {
         function Calculator() {
