@@ -1,265 +1,172 @@
 "use strict";
 
-let user = {
-    name: 'Iman',
-    age: 24,
-    [Symbol.toPrimitive](hint) {
-        return hint; //hint ==> parameter of alert() func , alert(param)
-        //return to alert() func
-    }
-};
-//without Symbol func
-alert(user); //[object Object]
-//with Symbol func
-alert(user); //string
-alert(+user); //NaN
-alert(user + 2); //default2
-console.log(user); //Object { name: "Iman", age: 24, Symbol(Symbol.toPrimitive): user() }
-/*=====================================
-=======================================*/
-let user = {
-    name: "John",
-    age: 24,
-  
-    [Symbol.toPrimitive](hint) {
-      return (hint === 'string') ? `name: ${this.name}` : this.age;
-    }
-};
-alert(user + 2); //26
-alert(user); //name: John
-alert(+user); //24
-/*=====================================
-=======================================*/
-let user = {
-    name: "John",
-    money: 1000,
-  
-    [Symbol.toPrimitive](hint) {
-      alert(`hint: ${hint}`);
-      return hint == "string" ? `{name: "${this.name}"}` : this.money;
-    }
-}; 
-// conversions demo:
-alert(user); // hint: string -> {name: "John"}
-alert(+user); // hint: number -> 1000
-alert(user + 500); // hint: default -> 1500
-/*=====================================
-=======================================*/
-//or old version
-let user = {
-    name: "John",
-    money: 1000,
-    // for hint="string"
-    toString() {
-      return `{name: "${this.name}"}`;
-    },
-    // for hint="number" or "default"
-    valueOf() {
-      return this.money;
-    }
-};
-alert(user); //{name: "John"} , toString
-alert(+user); //1000 , valueOf
-alert(user + 500); //1500 , valueOf
-console.log(user);
-//Object { name: "John", money: 1000, toString: toString(), valueOf: valueOf() }
-/*=====================================
-=======================================*/
-let user = {
-    name: "John",
-    toString() {
-      return this.name;
-    }
-};
-alert(user); // toString -> John
-alert(user + 500); // toString -> John500
-/*=====================================
-=======================================*/
-let obj = {
-    toString() { // toString handles all conversions in the absence of other methods
-      return "2";
-    }
-};
-alert(obj * 2); // 4, ToPrimitive gives "2", then it becomes 2
-/*=====================================
-=======================================*/
-let obj = {
-    toString() {
-      return "2";
-    }
-};
-alert(obj + 2); // 22 (ToPrimitive returned string => concatenation)
-/*=====================================
-=======================================*/
-let obj = {
-    toString() {
-      return true;
-    }
-};
-alert(obj + 2); // 3 (ToPrimitive returned boolean, not string => ToNumber)
-/*=====================================
-=======================================*/
-//constructor function
-function User(name, age) {
-    // this = {};
-    this.name = name;
-    // this = {name: 'john'}
-    this.age = age;
-    // this = {name: 'john', age: 18}
-    // return this
-}
-let john = new User('Jhon', 18);
-let jane = new User('Jane', 18);
-let admin = new User('Admin', 18);
-
-console.log(john, jane, admin);
-//Object { name: "Jhon", age: 18 }
-//Object { name: "Jane", age: 18 }
-//Object { name: "Admin", age: 18 }
-console.log(john); //Object { name: "Jhon", age: 18 }
-console.log(john.name); //Jhon
-/*=====================================
-=======================================*/
-function User() {
-    alert(new.target);
-} 
-// without "new":
-User(); // undefined
-// with "new":
-new User(); // function User { alert(this instanceof User ? this.constructor : void 0); }
-/*=====================================
-=======================================*/
-function User(name) {
-    if (!new.target) { // if you run me without new
-        //!undefined == true
-        return new User(name); // ...I will add new for you
-    }
-    this.name = name;
-}
-let john = User("John"); // redirects call to new User
-alert(john.name); // John
-console.log(john); //Object { name: "John" }
-/*=====================================
-=======================================*/
-function BigUser() {
-    this.name = "John";
-    return {
-        name: "Godzilla"
-    }; //returns an object
-    //dont return this = {} object
-}
-alert( new BigUser().name );  //Godzilla, got that object ^^
-console.log( new BigUser() ); //Object { name: "Godzilla" }
-/*=====================================
-=======================================*/
-function SmallUser() {
-    this.name = "John";
-    return; // finishes the execution, returns this
-    // ...
-}
-alert( new SmallUser().name );  // John
-/*=====================================
-=======================================*/
-function User(name, age) {
-    this.name = name;
-    this.age = age;
-    return {
-        fullname: this.name,
-        userAge: this.age
-    };
-}
-let obj = new User('iman', 24);
-console.log(obj); //Object { fullname: "iman", userAge: 24 }
-/*=====================================
-=======================================*/
-function User(name) {
-    this.name = name;
-    this.sayHi = function() {
-        alert( "My name is: " + this.name );
-    };
-}
-let john = new User("John");
-john.sayHi(); // My name is: John
-/*=====================================
-=======================================*/
+console.log(0.1 + 0.2); //0.30000000000000004
+console.log(0.1 + 0.2 === 0.3); //false
+console.log((0.1 * 10 + 0.2 * 10) / 10); //0.3
+console.log((0.1 + 0.2).toFixed(1)); //0.3 string
+console.log(+(0.1 + 0.2).toFixed(1)); //0.3 integer
+console.log(9999999999999999); //10000000000000000
+console.log(-0 === 0); //true
+console.log(NaN === NaN); //false
+console.log(isNaN(NaN)); //true
+console.log(isFinite(10/0)); //false
+console.log(Object.is(NaN, NaN)); //true , compare
+console.log(Object.is(NaN, 6)); //false
+console.log(parseInt(45.68)); //45
+console.log(parseFloat(45.68)); //45.68
+let number = '3$'; //or '$3'
+console.log(Number(number)); //NaN
+console.log(+number); //NaN
+let num = '$3';
+console.log(parseInt(num)); //NaN
+console.log(parseInt(number)); //3
+let numb = 'ff';
+console.log(parseInt(numb, 16)); //255 , radix=16
+console.log(parseInt(1001, 2)); //9
+console.log(Math.random()); //0.9481971670262845 , between 0-1
+console.log(Math.max(3, 8, 6)); //8
+console.log(Math.min(4, 2, 1)); //1
+console.log(Math.pow(2, 3)); //8
 //Tasks
-let obj = {};
-function A() {
-    return obj;
+let a = +prompt("The first number?", "");
+let b = +prompt("The second number?", "");
+alert( a + b );
+/*=================================*/
+alert( 1.35.toFixed(1) ); // 1.4
+alert( 6.35.toFixed(1) ); // 6.3
+/*=================================*/
+function readNumber() {
+    let num;
+    do {
+        num = prompt("Enter a number please?", 0);
+    } while ( !isFinite(num) );
+
+    if (num === null || num === '') return null;
+    return +num;
 }
-function B() {
-    return obj;
+alert(`Read: ${readNumber()}`);
+/*=======================================*/
+function random(min, max) {
+    return min + Math.random() * (max - min);
 }
-alert( new A() == new B() ); // true
-/*=====================================
-=======================================*/
-function A() {
-    //return this;
+alert( random(1, 5) );
+alert( random(1, 5) );
+alert( random(1, 5) );
+/*======================================*/
+let message = `lkdfgjahg
+kajdhaflkafl
+kjdflkalkasjflkasjdflk
+asdkfadfasfklasd`;
+console.log(message); //Enter work in ``
+let msg = "sasgsgafg\nasdgagaga\nadsgagd"; //or ''
+console.log(msg); //Enter dont work in "" , we have to use \n
+let meseg = 'It\'s my first time to';
+console.log(meseg); //skip ' with \
+let mseg = 'C:\\windows';
+console.log(mseg); //C:\windows
+/*=======================================*/
+let str = "Hi buddy";
+console.log(str.length); //8
+console.log(str[3]); //b
+console.log(str.charAt(3)); //b
+let ms = '';
+for (let char of str) {
+    //console.log(char);
+    ms += `${char}, `;
 }
-function B() {
-    //return this;
+console.log(ms); //H, i,  , b, u, d, d, y,
+/*==================================*/
+let string = "hello john";
+console.log(string.indexOf('o')); //4
+console.log(string.indexOf('l')); //2
+console.log(string.indexOf('l', 3)); //3 , 3 param is start position
+console.log(string.indexOf('ll')); //2
+console.log(string.indexOf('ll', 3)); //-1 , not found , -1 is true!
+console.log(string.lastIndexOf('h')); //8
+console.log(string.includes('e')); //true , e is exist
+console.log(string.startsWith('h')); //true
+console.log(string.startsWith('hello')); //true
+console.log(string.endsWith('n')); //true
+if (string.indexOf('z')) {
+    //-1 is true
+    console.log("z doesn't exist");
 }
-alert( new A() == new B() ); // false
-/*=====================================
-=======================================*/
-function Calculator() {
-    this.read = function() {
-        this.a = +prompt('a?', 0);
-        this.b = +prompt('b?', 0);
-    };
-    this.sum = function() {
-        return this.a + this.b;
-    };
-    this.mul = function() {
-        return this.a * this.b;
-    };
-} 
-let calculator = new Calculator();
-calculator.read(); 
-alert( "Sum=" + calculator.sum() );
-alert( "Mul=" + calculator.mul() );
-/*=====================================
-=======================================*/
-function Accumulator(startingValue) {
-    this.value = startingValue;
-    this.read = function() {
-        this.value += +prompt('How much to add?', 0);
-    };
-} 
-let accumulator = new Accumulator(1);
-accumulator.read();
-accumulator.read();
-alert(accumulator.value);
-/*=====================================
-=======================================*/
-let name = "Rocky";
-console.log(name.toUpperCase());
-let num = 3.1445795432;
-console.log(num.toFixed(2)); //3.14
-let number = '0';
-number = Number(number);
-console.log(typeof number); //number
-alert( typeof 1 ); // "number"
-alert( typeof new Number(1) ); // "object"!
-alert(null.test); // error
-alert(undefined.test); // error
-let numb = 1e9; //1000000000 , 1 * 10^9
-console.log(numb);
-let numbe = 1e-9; //0.0000000010 , 1 * 10^-9
-console.log(numbe.toFixed(10));
-console.log(typeof NaN); //number
-let hex = 0xff;
-console.log(hex); //255
-let octal = 0o55;
-console.log(octal); //45
-let binary = 0b1001;
-console.log(binary); //9
-let radix = 0xff; //any number
-console.log(radix.toString(10)); //255 , radix from 2-36
-console.log(123456..toString(2)); //11110001001000000
-let floor = 4.35;
-console.log(Math.floor(floor)); //4
-console.log(Math.ceil(floor)); //5
-console.log(Math.round(floor)); //4
-console.log(Math.trunc(floor)); //4 , remove decimal
+console.log(~0); //-1
+console.log(~56); //-57
+console.log(~-1); //0
+console.log(~1); //-2
+if (~string.indexOf('z')) {
+    //0 is false
+    console.log("exist");
+}
+/*==================================*/
+let strg = "Hi Blazer";
+console.log(strg.slice()); //Hi Blazer
+console.log(strg.slice(0)); //Hi Blazer
+console.log(strg.slice(1)); //i Blazer
+console.log(strg.slice(0, 4)); //Hi B , (start, end) , first four character
+console.log(strg.slice(1, 4)); //i B
+console.log(strg.slice(1, -2)); //i Blaz , -2 is last index of
+console.log(strg.slice(1, 0)); //nothing
+
+console.log(strg.substring(1, 5)); //i Bl, (start, end)
+console.log(strg.substring(1, -3)); //H , -3 == 0
+console.log(strg.substring(1, 0)); //H
+console.log(strg.substring(-3, 5)); //Hi Bl , -3 == 0
+console.log(strg.substring(0, 5)); //Hi Bl
+
+console.log(strg.substr(0, 6)); //Hi Bla , (start, length) , allow negative start
+console.log(strg.substr(0, 10)); //Hi Blazer
+console.log(strg.substr(-8, 10)); //i Blazer , -8 is last index of
+console.log(strg.substr(-8, 8)); //i Blazer
+
+console.log('a' > 'A'); //true , ASCII code
+console.log('A'.codePointAt()); //65
+console.log('A'.codePointAt(0)); //65
+console.log('a'.codePointAt(0)); //97
+console.log(String.fromCodePoint(65)); //A
+console.log(String.fromCodePoint(97)); //a
+
+let strChar = '';
+for (let i = 65; i <= 220; i++) {
+    strChar += String.fromCodePoint(i);
+}
+console.log(strChar);
+
+console.log('Ö' > 'z'); //true
+console.log('a' < 'z'); //true
+console.log('z'.localeCompare('a')); //1
+console.log('Ö'.localeCompare('z')); //-1
+/*=====================================================*/
+//Tasks
+function checkSpam(str) {
+    let lowerStr = str.toLowerCase();
+    return lowerStr.includes('viagra') || lowerStr.includes('xxx');
+}
+alert( checkSpam('buy ViAgRA now') ); //true
+alert( checkSpam('free xxxxx') ); //true
+alert( checkSpam("innocent rabbit") ); //false
+/*===================================*/
+function truncate(str, maxlength) {
+    return (str.length > maxlength) ? str.slice(0, maxlength - 1) + '...' : str;
+}
+alert( truncate("What I'd like to tell on this topic is:", 20) ); //What I'd like to te...
+alert( truncate("Hi everyone!", 20) ); //Hi everyone!
+/*======================================*/
+function extractCurrencyValue(str) {
+    if (str.startsWith('$')) {
+        return +str.slice(1); //change type to number manual , with +
+    }
+    return parseInt(str); //change type to number automatic, dont need +
+}
+alert( extractCurrencyValue('$120') === 120 ); // true
+alert( extractCurrencyValue('120$') === 120 ); // true
+/*==========================================*/
+function ucFirst(str) {
+    if (!str) return str;
+    return str[0].toUpperCase() + str.slice(1);
+    //return J + ohn
+}
+alert( ucFirst("john") ); // John
+
 
