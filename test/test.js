@@ -3,6 +3,29 @@ const chai = require('chai');
 let assert = chai.assert;
 let _ = require('lodash');
 
+describe('styles', function() {
+    it('test', function() {
+        let styles = [
+            "Jazz",
+            "Blues"
+        ];
+        styles.push("Rock-n-Roll"); //['Jazz', 'Blues', 'Rock-n-Roll']
+        styles[Math.floor((styles.length - 1) / 2)] = "Classics"; //['Jazz', 'Classics', 'Rock-n-Roll']
+        styles.shift(); //['Classics', 'Rock-n-Roll']
+        styles.unshift("Rap", "Reggie"); //['Rap', 'Reggie', 'Classics', 'Rock-n-Roll']
+        _.isEqual(styles, ['Rap', 'Reggie', 'Classics', 'Rock-n-Roll']); //true
+        //console.log(styles);
+    });
+});
+describe('Random', function() {
+    it('test', function() {
+        function random(min, max) {
+            return min + Math.random() * (max - min);
+        }
+        let result = random(1, 5)
+        assert.isTrue(result <= 5 && result >= 1); //true
+    });
+});
 describe('checkSpam', function() {
     it('test', function() {
         function checkSpam(str) {
