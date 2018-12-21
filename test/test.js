@@ -28,6 +28,7 @@ describe('Random', function() {
     });
 });
 
+
 function getMaxSubSum(arr) {
     let maxSum = 0;
     let partialSum = 0;
