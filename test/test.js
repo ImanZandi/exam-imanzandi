@@ -2,59 +2,156 @@ const chai = require('chai');
 let assert = chai.assert;
 let _ = require('lodash');
 
-describe('styles', function() {
-    let styles = [
-            "Jazz",
-            "Blues"
-        ];
-    styles.push("Rock-n-Roll"); //['Jazz', 'Blues', 'Rock-n-Roll']
-    styles[Math.floor((styles.length - 1) / 2)] = "Classics"; //['Jazz', 'Classics', 'Rock-n-Roll']
-    styles.shift(); //['Classics', 'Rock-n-Roll']
-    styles.unshift("Rap", "Reggie"); //['Rap', 'Reggie', 'Classics', 'Rock-n-Roll']
-    it('test', function() {
-        _.isEqual(styles, ['Rap', 'Reggie', 'Classics', 'Rock-n-Roll']); //true
+
+// Define your functions outside of tests.
+
+/**
+ * Check string if contains spams
+ * 
+ * @param {string} str 
+ * @return {boolean}
+ */
+function checkSpam(str) {
+    let lowerStr = str.toLowerCase();
+    return lowerStr.includes('viagra') || lowerStr.includes('xxx');
+}
+
+describe('Check Spam', function() {
+    it('returns true for alternate case viagra', function() {
+        // Assert each tests in a separate it 
+        assert.strictEqual(checkSpam('buy ViAgRA now'), true);
+    });
+
+    it('returns true for lowercase viagra', function() {
+        // Assert each tests in a separate it 
+        assert.strictEqual(checkSpam('buy viagra now'), true);
+    });
+
+    it('returns true for xxxx', () => {
+        assert.strictEqual(checkSpam('free xxxxx'), true);
+    });
+
+    it('returns false for clean strings', () => {
+        assert.strictEqual(checkSpam('innocent rabbit'), false);
+    });
+});
+
+/**
+ * Truncate given string to the given length concatenated with ...
+ * 
+ * @param {string} str 
+ * @param {number} maxlength 
+ * @return {string}
+ */
+function truncate(str, maxlength) {
+    return (str.length > maxlength) ? str.slice(0, maxlength - 1) + '...' : str;
+}
+describe('Truncate', function() {
+    it('Truncate long strings and add ... at the end of it', function() {
+        assert.strictEqual(truncate("What I'd like to tell on this topic is:", 20), "What I'd like to te...");
+    });
+
+    it('Doesn\'t change small strings', () => {
+        assert.strictEqual(truncate("Hi everyone!", 20), "Hi everyone!");
+    });
+});
+
+/**
+ * Return a valid number from given currency string
+ * 
+ * @param {string} str 
+ * @return {number}
+ */
+function extractCurrencyValue(str) {
+    if (str.startsWith('$')) {
+        return +str.slice(1); //change type to number manual , with +
+    }
+    return parseInt(str); //change type to number automatic, dont need +
+}
+describe('extractCurrencyValue', function() {
+    it('returns 120 from $120', function() {
+        assert.strictEqual(extractCurrencyValue('$120'), 120);
+    });
+
+    it('returns 120 from 120$', () => {
+        assert.strictEqual(extractCurrencyValue('120$'), 120);
+    });
+
+    it('returns 120 from string 120', () => {
+        assert.strictEqual(extractCurrencyValue('120'), 120);
+    });
+
+    it('returns 120 from number 120', () => {
+        assert.strictEqual(extractCurrencyValue(120), 120);
     });
 });
 
 
-function random(min, max) {
-    return min + Math.random() * (max - min);
-}
-describe('Random', function() {
-    let result = random(1, 5);
-    it('test', function() {
-        assert.isTrue(result <= 5 && result >= 1); //true
+/**
+ * A calculator for doing three main job. Reading value, adding and multiplying
+ */
+function Calculator() {
+    this.read = function(primary = 0) {
+        this.primary = primary;
+    };
+
+    this.sum = function(sumOperator = 0) {
+        this.sumOperator = sumOperator;
+        this.sumResult = this.primary + this.sumOperator;
+        return this.sumResult;
+    };
+
+    this.mul = function(mulOperator = 0) {
+        this.mulOperator = mulOperator;
+        this.mulResult = this.sumResult * this.mulOperator;
+        return this.mulResult;
+    };
+} 
+describe('Calculator', function() {
+    let calculator = new Calculator();
+    it('Checks if calculator read numbers', function() {
+        calculator.read(4); 
+        assert.strictEqual(calculator.value, 4);
+    });
+
+    it('checks calculator sum', () => {
+        calculator.sum(4);
+        assert.strictEqual(calculator.value, 8);
+    });
+
+    it('checks calculator mul', () => {
+        calculator.mul(2);
+        assert.strictEqual(calculator.value, 16);
     });
 });
 
+/**
+ * Accumulator which only read values and sum them up.
+ * 
+ * @param {number} startingValue 
+ */
+function Accumulator(startingValue) {
+    this.value = startingValue;
 
-function getMaxSubSum(arr) {
-    let maxSum = 0;
-    let partialSum = 0;
-    for (let item of arr) { // for each item of arr
-        partialSum += item; // add it to partialSum
-        maxSum = Math.max(maxSum, partialSum); // remember the maximum
-        if (partialSum < 0) partialSum = 0; // zero if negative
-    }  
-    return maxSum;
-}
-describe('getMaxSubSum', function() {
-    it('max of [-1, 2, 3, -9]', function() {
-        assert.strictEqual(getMaxSubSum([-1, 2, 3, -9]), 5); //true
+    this.read = function(primary) {
+        this.primary = primary;
+        this.value = this.value + this.primary;
+    };
+} 
+describe('Accumulator', function() {
+    let accumulator = new Accumulator(1);
+    it('checks the accumulator initializing', function() {
+        assert.strictEqual(accumulator.value, 1);
     });
-    it('max of [-1, 2, 3, -9, 11]', function() {
-        assert.strictEqual(getMaxSubSum([-1, 2, 3, -9, 11]), 11);
+
+    it('returns 5 after reading 4', () => {
+        accumulator.read(4);
+        assert.strictEqual(accumulator.value, 5);
     });
-    it('max of [-2, -1, 1, 2]', function() {
-        assert.strictEqual(getMaxSubSum([-2, -1, 1, 2]), 3);
-    });
-    it('max of [100, -9, 2, -3, 5]', function() {
-        assert.strictEqual(getMaxSubSum([100, -9, 2, -3, 5]), 100);
-    });
-    it('max of [1, 2, 3]', function() {
-        assert.strictEqual(getMaxSubSum([1, 2, 3]), 6);
-    });
-    it('max of [-1, -2, -3]', function() {
-        assert.strictEqual(getMaxSubSum([-1, -2, -3]), 0);
+
+    it('returns 9 after another read of 4', () => {
+        accumulator.read(4);
+
+        assert.strictEqual(accumulator.value, 9);
     });
 });
