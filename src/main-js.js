@@ -1,17 +1,5 @@
 "use strict";
 
-let styles = [
-    "Jazz",
-    "Blues"
-];
-styles.push("Rock-n-Roll"); //['Jazz', 'Blues', 'Rock-n-Roll']
-styles[Math.floor((styles.length - 1) / 2)] = "Classics"; //['Jazz', 'Classics', 'Rock-n-Roll']
-styles.shift(); //['Classics', 'Rock-n-Roll']
-styles.unshift("Rap", "Reggie"); //['Rap', 'Reggie', 'Classics', 'Rock-n-Roll']
-console.log(styles);
-//Your code for finding the middle value should work for any arrays with odd length.
-/*========================================
-=========================================*/
 function sumInput() {
     let numbers = [];
     while (true) {
